@@ -19,7 +19,7 @@ while True:
 	print 'HTTP request received:'
 	peticion = recvSocket.recv(1024)
 	num = peticion.split()[1][1:]
-
+	
 	if primer == None:
 		primer = num
 		recvSocket.send("HTTP/1.1 200 OK\r\n\r\n" +
