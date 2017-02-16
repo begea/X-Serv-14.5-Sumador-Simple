@@ -1,6 +1,5 @@
 
-#!/usr/bin/python
-# Borja Egea Madrid
+#!/usr/bin/python3
 
 import socket
 
@@ -14,9 +13,9 @@ mySocket.listen(5)
 primer = None
 
 while True:
-	print 'Waiting for connections'
+	print ('Waiting for connections')
 	(recvSocket, address) = mySocket.accept()
-	print 'HTTP request received:'
+	print ('HTTP request received:')
 	peticion = recvSocket.recv(1024)
 	num = peticion.split()[1][1:]
 
