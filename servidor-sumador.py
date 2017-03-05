@@ -19,31 +19,40 @@ try:
 		peticion = recvSocket.recv(2048).decode('utf-8')
 		num = peticion.split()[1][1:]
 
+		if num == "favicon.ico":
+			recvSocket.send(bytes("HTTP/1.1 404 Not Found\r\n\r\n" +
+				"<html><body>Not Found" + "</body></html>" +
+				"\r\n", 'utf-8'))
+			recvSocket.close()
+
 		if primer == None:
 			primer = num
 			recvSocket.send(bytes("HTTP/1.1 200 OK\r\n\r\n" +
-				"<html><body><h1>Primer numero: " + str(primer) + ". Dame otro número.""</h1></body></html>"
+				"<html><body><h1>Primer numero: " + str(primer) + ". Dame otro numero.""</h1></body></html>"
 					+ "\r\n", 'utf-8'))
+			recvSocket.close()
+			continue
 
 		else:
-				try:
-					suma = int(primer) + int(num)
+			try:
+				suma = int(primer) + int(num)
 
-					recvSocket.send(bytes("HTTP/1.1 200 OK\r\n\r\n" +
-						"<html><body><h1>" + str(primer) + " + " + str(num) + " = " + str(suma) + "</h1></body></html>"
-							+ "\r\n", 'utf-8'))
+				recvSocket.send(bytes("HTTP/1.1 200 OK\r\n\r\n" +
+					"<html><body><h1>" + str(primer) + " + " + str(num) + " = " + str(suma) + "</h1></body></html>"
+						+ "\r\n", 'utf-8'))
 
-					primer = None
+				recvSocket.close()
+				primer = None
+				continue
 
-				except ValueError:
-					recvSocket.send(bytes("HTTP/1.1 400 Error..\r\n\r\n" +
-						"<html><body><h1>No podemos sumar enteros y caracteres</h1></body></html>"
-							+ "\r\n", 'utf-8'))
+			except ValueError:
+				recvSocket.send(bytes("HTTP/1.1 400 Error..\r\n\r\n" +
+					"<html><body><h1>No podemos sumar enteros y caracteres</h1></body></html>"
+						+ "\r\n", 'utf-8'))
 
-					primer = None
-	recvSocket.close()
+				primer = None
+				recvSocket.close()
 
 except KeyboardInterrupt:
 	print ("Closing binded socket")
 	mySocket.close()
-	
